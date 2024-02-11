@@ -35,15 +35,20 @@ end
 function Memory:ReadCString(ptr)
     local value, offset, cstring = 0, 0, {}
     local address = Memory:ReadPointer(ptr);
-    while true do
-        value = Memory:ReadByte(address + offset)
-        if value >= 0 and value <= 0xFF then
-            if value == 0 then
+    local _address = {}
+    for i = 0, 255 do
+        table.insert(_address,{address=address + i, flags=gg.TYPE_BYTE});
+    end
+    local values = gg.getValues(_address)
+    
+    
+    if(type(values) ~= "string") then
+        for _, value in ipairs(values) do
+            if value.value == 0 then
                 break
             end
-            table.insert(cstring, string.char(value))
-        end
-        offset = offset + 1;
+            table.insert(cstring, string.char(value.value))
+        end 
     end
     return table.concat(cstring)
 end
