@@ -48,7 +48,7 @@ function IL2Method32:ReadMethod(methodsPtr, index)
         return false
     end
     local addrMethod = Memory:ReadPointer(ptrMethod + currentMethodOffset)
-    if self.unityVersion >= 18 and  self.unityVersion <= 27 then
+    if self.unityVersion >= 18 and  self.unityVersion < 27 then
         self.ptrMethod = addrMethod
         self.ptrInvokerMethod = addrMethod + 0x4
         self.name = Memory:ReadCString(addrMethod + 0x8)

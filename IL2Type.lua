@@ -37,7 +37,12 @@ Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_I8] = gg.TYPE_QWORD
 Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_U8] = gg.TYPE_QWORD
 Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_R4] = gg.TYPE_FLOAT
 Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_R8] = gg.TYPE_DOUBLE
-
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_SZARRAY] = gg.TYPE_PTR
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_CLASS] = gg.TYPE_DWORD
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_PTR] = gg.TYPE_PTR
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_OBJECT] = gg.TYPE_PTR
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_GENERICINST] = gg.TYPE_PTR
+Il2CppTypeGG[Il2CppTypeEnum.IL2CPP_TYPE_ENUM] = gg.TYPE_DWORD
 
 IL2Type = {}
 function IL2Type:new()
@@ -94,7 +99,11 @@ function IL2Type:getTypeName()
 end
 
 function IL2Type:getTypeGG()
-    return Il2CppTypeGG[self.type]
+    local r = Il2CppTypeGG[self.type]
+    if r == nil then
+        return gg.TYPE_AUTO
+    end
+    return r
 end
 
 IL2Type32 = IL2Type:new()

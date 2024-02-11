@@ -14,18 +14,42 @@ function FindBaseAddressApp(libname)
     return -1;
 end
 
-function getCorLibSize(ptr) 
+function getCorLibSize(ptr)
     local _start = Memory:ReadPointer(ptr);
     local _end = Memory:ReadPointer(ptr + 0x4);
-    return ((_end - _start) >> 2) 
+    return ((_end - _start) >> 2)
 end
 
 local BaseIl2Cpp = FindBaseAddressApp("libil2cpp.so")
-local aGameController = Memory:ReadPointer(BaseIl2Cpp + 0x10353D4);
-local KGameController = IL2Class32:new(27)
-KGameController:readClass(aGameController)
-for _, value in ipairs(KGameController:getFields()) do
-    --print(value.parametersCount)
-    print(string.format("%s %s //0x%X",value:getTypeName(),value:getName(), value.offset))
 
+
+
+gg.showUiButton()
+while true do
+    if gg.isClickedUiButton() then
+        local index = gg.choice({ "Get Fields GameController", "Get Fields Select", nil, "Menu" })
+        local aGameController = Memory:ReadPointers(BaseIl2Cpp, { 0x54251AC, 0x5C, 0 })
+        if index == 1 then
+            local KGameController = IL2Class32:new(29)
+            KGameController:readClass(Memory:ReadPointer(aGameController))
+            KGameController:readFields()
+            KGameController:readHierarchys()
+            gg.clearList()
+            for _, value in ipairs(KGameController:getFields()) do
+                gg.addListItems({ { address = aGameController + value.offset, flags = value.type:getTypeGG(), name = value:getName() } })
+            end
+        end
+        if index == 2 then
+            local s = IL2Class32:new(29)
+            local select = gg.getSelectedListItems()[1].value
+            gg.clearList()
+            s:readClass(Memory:ReadPointer(select))
+            s:readFields()
+            s:readHierarchys()
+            for _, value in ipairs(s:getFields()) do
+                gg.addListItems({ { address = select + value.offset, flags = value.type:getTypeGG(), name = value:getName() } })
+            end
+        end
+
+    end
 end
