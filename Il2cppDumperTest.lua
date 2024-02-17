@@ -26,9 +26,9 @@ local BaseIl2Cpp = FindBaseAddressApp("libil2cpp.so")
 
 gg.showUiButton()
 while true do
-    if gg.isClickedUiButton() then
+    if gg.isClickedUiButton() then --CharacterLinker//
         local index = gg.choice({ "Get Fields GameController", "Get Fields Select", nil, "Menu" })
-        local aGameController = Memory:ReadPointers(BaseIl2Cpp, { 0x54251AC, 0x5C, 0 })
+        local aGameController = Memory:ReadPointers(BaseIl2Cpp, {0x5427F40 , 0x5C, 0 })
         if index == 1 then
             local KGameController = IL2Class32:new(29)
             KGameController:readClass(Memory:ReadPointer(aGameController))

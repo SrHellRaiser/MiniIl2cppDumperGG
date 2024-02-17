@@ -2,6 +2,23 @@ require("Memory")
 require("IL2Method")
 require("IL2Field")
 
+
+function printProgressBar(progress, total)
+    local progressBarLength = 20
+    local progressRatio = progress / total
+    local progressBarFilled = math.floor(progressRatio * progressBarLength)
+    local split_string = {}
+    table.insert(split_string,"[")
+    for i = 1, progressBarFilled do
+     table.insert(split_string,"=")
+    end
+    for i = progressBarFilled + 1, progressBarLength do
+        io.write(" ")
+    end
+    table.insert(split_string,"] " .. math.floor(progressRatio * 100) .. "%\r")
+    return table.concat(split_string);
+end
+
 IL2Class = {}
 function IL2Class:new(unityVersion)
     local object = {
@@ -11,7 +28,8 @@ function IL2Class:new(unityVersion)
         methods = {},
         fieldsCount = 0,
         methodsCount = 0,
-        typeHierarchy = {}
+        typeHierarchy = {},
+        token = 0
     }
     setmetatable(object, self);
     self.__index = self
@@ -48,7 +66,6 @@ function IL2Class:readFields()
 end
 
 function IL2Class:readMethods()
-    self.methodsCount = Memory:ReadInt16(self.__methodPtr)
     for i = 1, self.methodsCount do
         local tmpMethod = IL2Method32:new(self.unityVersion)
         tmpMethod:ReadMethod(self.__methodPtr, i)
@@ -81,6 +98,7 @@ function IL2Class32:readClass(kclassAddr)
         --methods
         self.__methodPtr = self.__cache_addr + 0x4C
         self.methodsCount = Memory:ReadInt16(kclassAddr + 0xA4)
+        self.token = Memory:ReadPointer(kclassAddr + 0x18)
     end
 end
 

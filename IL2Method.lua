@@ -40,6 +40,9 @@ function IL2Method32:new(unityVersion)
     return object
 end
 
+function IL2Method32:ToStringArgs(fuction)
+    
+end
 function IL2Method32:ReadMethod(methodsPtr, index)
     local currentMethodOffset = (index - 1) * 4
 
@@ -48,15 +51,26 @@ function IL2Method32:ReadMethod(methodsPtr, index)
         return false
     end
     local addrMethod = Memory:ReadPointer(ptrMethod + currentMethodOffset)
-    if self.unityVersion >= 18 and  self.unityVersion < 27 then
+    if self.unityVersion >= 18 and self.unityVersion <= 27 then
         self.ptrMethod = addrMethod
         self.ptrInvokerMethod = addrMethod + 0x4
         self.name = Memory:ReadCString(addrMethod + 0x8)
         self.returnType:ReadType(addrMethod + 0x10)
         self.parametersCount = Memory:ReadByte(addrMethod + 0x2A)
-        for index = 1, self.parametersCount  do
+        for index = 1, self.parametersCount do
             local _parameter = IL2Parameter32:new();
             _parameter:ReadParameter(addrMethod + 0x14, index);
+            table.insert(self.parameters, _parameter)
+        end
+    elseif self.unityVersion >= 29 then
+        self.ptrMethod = addrMethod
+        self.ptrInvokerMethod = addrMethod + 0x4
+        self.name = Memory:ReadCString(addrMethod + 0xC)
+        self.returnType:ReadType(addrMethod + 0x14)
+        self.parametersCount = Memory:ReadByte(addrMethod + 0x2E)
+        for i = 1, self.parametersCount do
+            local _parameter = IL2Parameter32:new();
+            _parameter:ReadParameter(addrMethod + 0x18, index);
             table.insert(self.parameters, _parameter)
         end
     end

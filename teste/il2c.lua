@@ -1,0 +1,1 @@
+gg.alert("ddd")

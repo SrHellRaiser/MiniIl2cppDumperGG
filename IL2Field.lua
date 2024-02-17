@@ -76,7 +76,7 @@ function IL2Field32:ReadField(fieldsPtr, index)
         self.type:ReadType(addrField + 0x4)
         self.parent = addrField + 0x8
         self.offset = Memory:ReadInt32(addrField + 0xC)
-        self.token = Memory:ReadInt32(addrField + 0x10)
+        self.token = Memory:ReadPointer(addrField + 0x10)
     end
     return true
 end

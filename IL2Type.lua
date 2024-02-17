@@ -48,6 +48,7 @@ IL2Type = {}
 function IL2Type:new()
     local object = {
         type = 0,
+        token = 0,
         attrs = 0,
         subtype = 0
     }
@@ -124,7 +125,7 @@ function IL2Type32:ReadType(typePtr)
 
     self.type = Memory:ReadInt32(addrType + 0x4) >> 16
     self.type = self.type & 0xFF
-
+    self.token = Memory:ReadPointer(addrType) - gg.getRangesList("global-metadata.dat")[1].start
     if self.type == Il2CppTypeEnum.IL2CPP_TYPE_SZARRAY then
         local addrSubType = Memory:ReadPointer(addrType) 
         self.subtype = Memory:ReadInt32(addrSubType + 0x4) >> 16
