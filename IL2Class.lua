@@ -2,23 +2,6 @@ require("Memory")
 require("IL2Method")
 require("IL2Field")
 
-
-function printProgressBar(progress, total)
-    local progressBarLength = 20
-    local progressRatio = progress / total
-    local progressBarFilled = math.floor(progressRatio * progressBarLength)
-    local split_string = {}
-    table.insert(split_string,"[")
-    for i = 1, progressBarFilled do
-     table.insert(split_string,"=")
-    end
-    for i = progressBarFilled + 1, progressBarLength do
-        io.write(" ")
-    end
-    table.insert(split_string,"] " .. math.floor(progressRatio * 100) .. "%\r")
-    return table.concat(split_string);
-end
-
 IL2Class = {}
 function IL2Class:new(unityVersion)
     local object = {
