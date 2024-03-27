@@ -68,7 +68,6 @@ function IL2Class32:new(version)
     return object
 end
 
-
 function IL2Class32:readClass(kclassAddr)
     self.__cache_addr = kclassAddr
     if self.unityVersion >= 18 and self.unityVersion <= 29 then
@@ -88,17 +87,17 @@ end
 function IL2Class32:readHierarchys()
     local typeHierarchy = Memory:ReadPointer(self.__cache_addr + 0x64)
     local count         = 2;
-    repeat
+    while true do
         local kclassAddr = Memory:ReadPointer(typeHierarchy + count * 4)
-        local kclassHierarchys  = IL2Class32:new(self.unityVersion)
+        if kclassAddr == self.__cache_addr then
+            break;
+        end
+        local kclassHierarchys = IL2Class32:new(self.unityVersion)
         kclassHierarchys:readClass(kclassAddr)
         kclassHierarchys:readFields()
         for _, value in ipairs(kclassHierarchys:getFields()) do
             table.insert(self.fields, value)
         end
-        if kclassAddr == self.__cache_addr then
-            break;
-        end
         count = count + 1
-    until self.__cache_addr ==  kclassAddr
+    end
 end
