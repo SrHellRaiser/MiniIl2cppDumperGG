@@ -43,6 +43,7 @@ end
 function IL2Method32:ToStringArgs(fuction)
     
 end
+
 function IL2Method32:ReadMethod(methodsPtr, index)
     local currentMethodOffset = (index - 1) * 4
 

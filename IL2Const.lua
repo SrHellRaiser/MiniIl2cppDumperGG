@@ -37,7 +37,6 @@ Il2CppTypeEnum                            = {
     IL2CPP_TYPE_ENUM = 0x55,
 }
 
---Atributos de field
 FIELD_ATTRIBUTE_PRIVATE                   = 0x0001
 FIELD_ATTRIBUTE_FAM_AND_ASSEM             = 0x0002
 FIELD_ATTRIBUTE_ASSEMBLY                  = 0x0003
@@ -56,7 +55,7 @@ FIELD_ATTRIBUTE_HAS_FIELD_MARSHAL         = 0x1000
 FIELD_ATTRIBUTE_HAS_DEFAULT               = 0x8000
 FIELD_ATTRIBUTE_HAS_FIELD_RVA             = 0x0100
 
---Atributos de tipo
+
 TYPE_ATTRIBUTE_VISIBILITY_MASK            = 0x00000007
 TYPE_ATTRIBUTE_NOT_PUBLIC                 = 0x00000000
 TYPE_ATTRIBUTE_PUBLIC                     = 0x00000001
